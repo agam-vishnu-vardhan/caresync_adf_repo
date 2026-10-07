@@ -55,7 +55,7 @@
 					{
 						"activity": "Check_Source_System",
 						"dependencyConditions": [
-							"Skipped"
+							"Succeeded"
 						]
 					}
 				],
