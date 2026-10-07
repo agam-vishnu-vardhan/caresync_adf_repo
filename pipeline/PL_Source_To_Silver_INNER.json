@@ -5,6 +5,8 @@
 			{
 				"name": "Read_Table_Details",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -34,6 +36,8 @@
 			{
 				"name": "Set Start Time",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureOutput": false,
@@ -51,6 +55,8 @@
 			{
 				"name": "Source To Landing Ingestion",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Read_Table_Details",
@@ -124,6 +130,8 @@
 			{
 				"name": "Landing_To_Bronze",
 				"type": "DatabricksNotebook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Source To Landing Ingestion",
@@ -165,6 +173,8 @@
 			{
 				"name": "Bronze_To_Silver",
 				"type": "DatabricksNotebook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Landing_To_Bronze",
@@ -227,7 +237,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "update ctrl.audit_log set status = 'SUCCESS', end_time = SYSUTCDATETIME(), RECORDS_WRITTEN = @{activity('Bronze_To_Silver').output.runOutput}\nwhere adf_run_id = @{pipeline().parameters.adf_run_id} and table_id = @{pipeline().parameters.table_id}",
+								"value": "update ctrl.audit_log set status = 'SUCCESS', end_time = SYSUTCDATETIME(), RECORDS_WRITTEN = @{activity('Bronze_To_Silver').output.runOutput}\nwhere adf_run_id = '@{pipeline().parameters.adf_run_id}' and table_id = @{pipeline().parameters.table_id}",
 								"type": "Expression"
 							}
 						}
