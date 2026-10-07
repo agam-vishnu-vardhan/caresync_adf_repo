@@ -71,7 +71,7 @@
 					"source": {
 						"type": "PostgreSqlV2Source",
 						"query": {
-							"value": "SELECT * from PUBLIC.@{activity('Read_Table_Details').output.firstRow.source_table_name}\n@{\n    if(equals(activity('Read_Table_Details').output.firstRow.load_type, 'FULL' )\n    , ''\n    , concat(\n            ' where', activity('Read_Table_Details').output.firstRow.watermark_column ,' > ','''',variables('watermark_value'),'''')\n    )\n}",
+							"value": "SELECT * from PUBLIC.@{activity('Read_Table_Details').output.firstRow.source_table_name}\n@{\n    if(equals(activity('Read_Table_Details').output.firstRow.load_type, 'FULL' )\n    , ''\n    , concat(\n            ' where ', activity('Read_Table_Details').output.firstRow.watermark_column ,' > ','''',variables('watermark_value'),'''')\n    )\n}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00"
@@ -355,7 +355,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "update ctrl.watermark\nset watermark_value = 'SYSUTCDATETIME()'\nwhere table_id = @{pipeline().parameters.table_id}",
+											"value": "update ctrl.watermark\nset watermark_value = SYSUTCDATETIME()\nwhere table_id = @{pipeline().parameters.table_id}",
 											"type": "Expression"
 										}
 									}
